@@ -1,0 +1,4 @@
+invoice_id,date,commercial_invoice_number,payment_type,container_no,bl_no,product_name,quantity,rate,billing_address,payment_terms,port_of_discharge,number_of_days,payment_due_date,etd,eta,ac_details,remark
+4549344712,25-11-2022,NS202211-4,0,1234ADS,123456,testpro-testmodel,34,100,,,,,,,,,
+4549344713,22-12-2022,NS202211-5,1,2022ABS,123456789,satyamtest-Western,123,123,,,,,,,,,
+4549344814,12-10-2022,NS202211-6,0,102JDSH,22313,Carrara-New,25,25,,,,,,,,,

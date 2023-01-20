@@ -1,0 +1,4 @@
+purchase_date,product_name,quantity,rate,chalan_no,receipt,pre_carriage,country_destination,loading,discharge,terms_payment,description_goods,ac_details,remark
+25-11-2022,testpro-testmodel,20,100,,,,,,,,,,
+22-12-2022,satyamtest-Western,30,300,,,,,,,,,,
+12-10-2022,Carrara-New,70,343,,,,,,,,,,
