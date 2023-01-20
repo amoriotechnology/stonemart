@@ -64,10 +64,11 @@ class Permission_model extends CI_Model {
 
 
 	public function user_list(){
-
+        $user_id = $this->session->userdata('user_id');
 		$this->db->select('*');
 
 		$this->db->from('sec_role');
+        $this->db->where('uid', $user_id);
 
 		$query = $this->db->get();
 
@@ -77,12 +78,14 @@ class Permission_model extends CI_Model {
 
 		}
             return false;
+        
+           
 
     }
 
         public function assign_list()
         {
-            $sql='SELECT s.id,u.first_name,u.last_name,sc.type FROM sec_userrole as s JOIN sec_role as sc on s.roleid=sc.id JOIN users as u on u.id=s.user_id JOIN user_login as ul on ul.user_id=sc.uid where sc.uid='.$_SESSION['user_id'];
+            $sql='SELECT s.id,u.first_name,u.last_name,sc.type FROM sec_userrole as s JOIN sec_role as sc on s.roleid=sc.id JOIN users as u on u.user_id=sc.uid where sc.uid='.$_SESSION['user_id'];
 
         $query = $this->db->query($sql);
 
@@ -98,11 +101,15 @@ class Permission_model extends CI_Model {
 
     public function user(){
 
-        $query='SELECT a.* FROM `users` a JOIN user_login b on a.company_name=b.cid';
+        $user_id = $this->session->userdata('user_id');
+        $this->db->select('a.*,b.*');
+        $this->db->from('users a');
+        $this->db->join('user_login b', 'a.user_id = b.user_id');
+        $this->db->where('b.u_type', '3');
+        $this->db->where('a.user_id', $user_id);
 
       
-
-        $query = $this->db->query($query);
+        $query = $this->db->get();
 
         if ($query->num_rows() > 0) {
 
@@ -110,7 +117,9 @@ class Permission_model extends CI_Model {
 
         }
 
-        return false;
+        
+
+      
 
     }
 

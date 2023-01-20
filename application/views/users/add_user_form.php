@@ -10,7 +10,7 @@
             <ol class="breadcrumb">
                 <li><a href="index.html"><i class="pe-7s-home"></i> <?php echo display('home') ?>dsds</a></li>
                 <li><a href="#"><?php echo display('web_settings') ?></a></li>
-                <li class="active">Add Adminw</li>
+                <li class="active">Add Admin</li>
             </ol>
         </div>
     </section>
@@ -145,7 +145,7 @@
                         <div class="form-group row">
                             <label for="user_type" class="col-sm-3 col-form-label"><?php echo display('user_type') ?> <i class="text-danger">*</i></label>
                             <div class="col-sm-6">
-                                <select required class="form-control" name="user_type" id="user_type" tabindex="6" ramji="">
+                                <select required class="form-control" name="user_type" id="user_type" tabindex="6">
 								    <option value="0"><?php echo display('select_one') ?></option>
 								    <option value="1"><?php echo display('admin') ?></option>
 								    <option value="2"><?php echo display('user') ?></option>

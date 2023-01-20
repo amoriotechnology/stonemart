@@ -67,7 +67,7 @@
                         </thead>
         <tbody>
                          <?php
-                           if($user_count >0){
+                           if($user_list >0){
                                   foreach($user_list as $key=>$row){
                                     ?>
                                     <tr>

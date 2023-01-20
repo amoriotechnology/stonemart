@@ -109,7 +109,7 @@ $current=date('Y-m-d');
         $no_of_expense     = $CI->Reports->total_purchase_report();
         $total_sales_invoice         = $CI->Reports->total_sale_invoice();
         $service_provider_list = $CI->Invoices->servic_provider();
-        $servic_p_amount = $CI->Invoices->servic_provider_amount();
+      
         $total_sales         = $CI->Reports->total_sales_amount($split[0],$split[1]);
         $total_purchase      = $CI->Reports->total_purchase_amount($split[0],$split[1]);
         $total_expenses      =$CI->Reports->total_expense_amount($split[0],$split[1]);
@@ -174,7 +174,6 @@ if (!empty($best_sales_product))
              $todays_overview=isset($p[7]->slug)?$p[7]->status:'enable';
              $yearly_report=isset($p[8]->slug)?$p[8]->status:'enable';
              $todays_sales_report_set=isset($p[9]->slug)?$p[9]->status:'enable';
-             $vendor=isset($p[10]->slug)?$p[10]->status:'enable';
             
          }
          //$data1 is for sample can be delete
@@ -211,7 +210,7 @@ if (!empty($best_sales_product))
     'tlvmonthpurchase'    => $currentyearpurchase,
     'month'               => $tlvmonth,
     'total_sales'         => $total_sales,
- 'servic_p_amount'  => $servic_p_amount,
+ 
 
 'service_provider_list'  => $service_provider_list,
     'sale_setting'  => $Sale,
@@ -238,7 +237,7 @@ if (!empty($best_sales_product))
     'currency'            => $currency_details[0]['currency'],
     'position'            => $currency_details[0]['currency_position'],
         );
-  
+   
         $content = $CI->parser->parse('include/admin_home', $data, true);
         //print_r($data); die();
         $this->template->full_admin_html_view($content);
@@ -252,7 +251,7 @@ if (!empty($best_sales_product))
         $CI->load->model('Reports');
         //$info = $CI->Reports->chart($start,$end);
         $info = $CI->Reports->chart_exp($start,$end);
-        print_r($info);
+       
 
   }
 //    ============ its for see_all_best_sales =============
@@ -919,6 +918,9 @@ if (!empty($best_sales_product))
     #============User login=========#
 
     public function login() {
+
+
+        
         if ($this->auth->is_logged()) {
             $this->output->set_header("Location: " . base_url() . 'Admin_dashboard', TRUE, 302);
         }
@@ -928,6 +930,67 @@ if (!empty($best_sales_product))
     }
 
     public function userauth() {
+
+ $this->load->library('session');
+$this->session;
+
+  $query='select * from user_login where username="'.$_REQUEST['username'].'"';
+$query=$this->db->query($query);
+
+$row=$query->result_array();
+$u_type=$row[0]['u_type'];
+
+        $this->session->set_userdata('u_type',$u_type); 
+
+
+// echo $sql='SELECT d.* from user_login a join sec_userrole b on a.id=b.user_id JOIN sec_role c on c.id=b.user_id join role_permission d on d.role_id=c.id WHERE a.username="'.$_POST['username'].'"';
+$sql='select * from user_login where username="'.$_POST['username'].'"';
+$query=$this->db->query($sql);
+$row=$query->result_array();
+$user_id=$row[0]['user_id']; 
+
+$sql='select * from sec_userrole  where user_id="'.$user_id.'"';
+$query=$this->db->query($sql);
+$row=$query->result_array();
+ $num=$query->num_rows();
+ if($num>0)
+ {
+ $roleid=$row[0]['roleid'];
+
+ $sql='select * from role_permission  where role_id="'.$roleid.'"';
+$query=$this->db->query($sql);
+$row=$query->result_array();
+print_r($row[0]);
+
+   
+$newdata = array(
+               'sales'=>$row[0],
+'customer'=>$row[1],
+'product'=>$row[2],
+'supplier'=>$row[3],
+'purchase'=>$row[4],
+'stock'=>$row[5],
+'return'=>$row[6],
+'report'=>$row[7],
+'accounts'=>$row[8],
+'bank'=>$row[9],
+'tax'=>$row[10],
+'hrm_management'=>$row[11],
+'service'=>$row[12],
+'commission'=>$row[13],
+'setting'=>$row[14],
+'quotation'=>$row[15],
+
+               'logged_in' => TRUE
+           );
+
+    $this->session->set_userdata($newdata); 
+    
+   }
+
+
+
+     
         if (!$this->input->post('username',TRUE)) {
             $this->output->set_header("Location: " . base_url() . 'Admin_dashboard/login', TRUE, 302);
         }
@@ -1114,12 +1177,7 @@ if (!empty($best_sales_product))
         $CI = & get_instance();
         $CI->load->model('Reports');
         $data = array('title' => "Reports | Daily Closing");
-        $currency_details    = $CI->Web_settings->retrieve_setting_editdata();
-        $data=array();
         $data = $this->Reports->accounts_closing_data();
-       $data['currency']=  $currency_details[0]['currency'];
-      
-      
         $content = $this->parser->parse('accounts/closing_form', $data, true);
         $this->template->full_admin_html_view($content);
     }

@@ -24,7 +24,7 @@ class Lpermission {
 		$CI=& get_instance();
 		$CI->load->model('Permission_model');
 		$user=$CI->Permission_model->user();
-     
+    
 		$user_list=$CI->Permission_model->user_list();
         $assign_list=$CI->Permission_model->assign_list();
 

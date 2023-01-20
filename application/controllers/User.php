@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
@@ -132,6 +132,7 @@ $password=md5('gef'.$_POST['password']);
     $query=$this->db->query($sql);
     $row=$query->result_array();
 
+
      $cid=$row[0]['cid'];
      
      // print_r($_REQUEST);    
@@ -161,9 +162,9 @@ $query=$this->db->query($sql);
 
   "'.$_POST['lname'].'",
   "'.$_POST['fname'].'",            
-  "'.$cid.'",            
+  "'.$_SESSION['user_id'].'",            
   "'.$_POST['phone'].'",    
-  "'.$finalid.'",    
+  "'.$_SESSION['user_id'].'",   
   "'.$_POST['gender'].'",    
     
   "'.$_POST['Date'].'"   
@@ -176,29 +177,30 @@ $query=$this->db->query($sql);
 
    $id=$this->db->insert_id();
     
-echo $query='insert into user_login(
+$query='insert into user_login(
     
     username,
     password,
     user_id,
     u_type,
-    email,
+    email_id,
     cid
 )
 
 values(
     "'.$_POST['username'].'",
     "'.$password.'",
-    "'.$finalid.'",
+    "'.$_SESSION['user_id'].'",
     "3",
     "'.$_POST['email'].'",
-    "'.$cid.'"
+    "'.$_SESSION['user_id'].'"
     
 ) 
 
 ';
 
   $this->db->query($query);
+
 $this->session->set_userdata(array('message' => display('successfully_added')));
     redirect('User/manage_user');
 
@@ -239,22 +241,24 @@ $this->session->set_userdata(array('message' => display('successfully_added')));
         );
 
          $this->db->insert('company_information',$data);
-
+echo $this->db->last_query();
          $cid= $this->db->insert_id();
 
          $data = array(
             'username'    =>$this->input->post('username',true),
-            'password' => md5($this->input->post('password',true)),
+            'password' => md5("gef" . $this->input->post('password',true)),
             'user_type'      => $this->input->post('user_type',true),
+            'u_type'      => $this->input->post('user_type',true)+1,
             'security_code'   => $this->input->post('mobile',true),
             'email_id'  => $this->input->post('user_email',true),
             'status'       =>1,
             'cid'     => $cid,
+            'user_id' =>$cid,
             'create_by'     => $uid,
            
         );
          $insert=$this->db->insert('user_login',$data);
-
+echo $this->db->last_query();
          if($insert)
          {
             redirect('user/managecompany');
